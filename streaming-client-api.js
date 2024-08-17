@@ -1,6 +1,6 @@
 'use strict';
-const fetchJsonFile = await fetch("./api.json")
-const DID_API = await fetchJsonFile.json()
+const fetchJsonFile = await fetch("./api.json");
+const DID_API = await fetchJsonFile.json();
 
 if (DID_API.key == '🤫') alert('Please put your api key inside ./api.json and restart..');
 
@@ -38,7 +38,7 @@ const streamEventLabel = document.getElementById('stream-event-label');
 
 const presenterInputByService = {
   talks: {
-    source_url: 'https://logicoycreativo.com/did/a.jpg',
+    source_url: 'https://logicoycreativo.com/did/a.jpg', // URL de la nueva imagen
   },
   clips: {
     presenter_id: 'rian-lZC6MmWfC1',
@@ -55,11 +55,6 @@ connectButton.onclick = async () => {
   stopAllStreams();
   closePC();
 
-  /**
-   * Set 'stream_warmup' to 'true' in the payload to initiate idle streaming at the beginning of the connection, addressing jittering issues.
-   * The idle streaming process is transparent to the user and is concealed by triggering a 'stream/ready' event on the data channel,
-   * indicating that idle streaming has concluded and the stream channel is ready for use.
-   */
   const sessionResponse = await fetchWithRetries(`${DID_API.url}/${DID_API.service}/streams`, {
     method: 'POST',
     headers: {
@@ -97,7 +92,6 @@ connectButton.onclick = async () => {
 
 const startButton = document.getElementById('start-button');
 startButton.onclick = async () => {
-  // connectionState not supported in firefox
   if (
     (peerConnection?.signalingState === 'stable' || peerConnection?.iceConnectionState === 'connected') &&
     isStreamReady
@@ -142,7 +136,7 @@ destroyButton.onclick = async () => {
   closePC();
 };
 
-// Función para hacer que el avatar diga "Hola"
+// Función para hacer que el avatar diga "Hola, ¿cómo estás?"
 const speakButton = document.getElementById('speak-button');
 speakButton.onclick = async () => {
   const options = {
@@ -150,16 +144,16 @@ speakButton.onclick = async () => {
     headers: {
       accept: 'application/json',
       'content-type': 'application/json',
-      Authorization: `Basic ${DID_API.key}`,
+      Authorization: 'Bearer eb3777c768c6f1f6b0fc52adb0d7dc2d', // API Key de ElevenLabs
     },
     body: JSON.stringify({
       script: {
         type: 'text',
         provider: {
-          type: 'microsoft',
-          voice_id: 'en-US-JennyNeural',
+          type: 'elevenlabs', // Proveedor: ElevenLabs
+          voice_id: 'CamoVyd4MjMDTo3FB2jt', // ID de la voz personalizada
         },
-        input: 'Hello', // Aquí especificamos el texto "Hello"
+        input: 'Hola, ¿cómo estás?', // Nuevo texto
         ssml: false,
       },
       config: {
@@ -167,7 +161,7 @@ speakButton.onclick = async () => {
         pad_audio: 0.0,
       },
       audio_optimization: 2,
-      session_id: sessionId, // Asegúrate de que esta variable esté disponible
+      session_id: sessionId,
     }),
   };
 
@@ -203,7 +197,6 @@ function onIceCandidate(event) {
       }),
     });
   } else {
-    // For the initial 2 sec idle stream at the beginning of the connection, we utilize a null ice candidate.
     fetch(`${DID_API.url}/${DID_API.service}/streams/${streamId}/ice`, {
       method: 'POST',
       headers: {
@@ -225,15 +218,10 @@ function onIceConnectionStateChange() {
   }
 }
 function onConnectionStateChange() {
-  // not supported in firefox
   peerStatusLabel.innerText = peerConnection.connectionState;
   peerStatusLabel.className = 'peerConnectionState-' + peerConnection.connectionState;
   if (peerConnection.connectionState === 'connected') {
     playIdleVideo();
-    /**
-     * A fallback mechanism: if the 'stream/ready' event isn't received within 5 seconds after asking for stream warmup,
-     * it updates the UI to indicate that the system is ready to start streaming data.
-     */
     setTimeout(() => {
       if (!isStreamReady) {
         console.log('forcing stream/ready');
@@ -353,11 +341,17 @@ async function createPeerConnection(offer, iceServers) {
 function setStreamVideoElement(stream) {
   if (!stream) return;
 
+  const img = new Image();
+  img.src = presenterInputByService.talks.source_url;
+  img.onload = function () {
+    streamVideoElement.style.width = `${img.width}px`;
+    streamVideoElement.style.height = `${img.height}px`;
+  };
+
   streamVideoElement.srcObject = stream;
   streamVideoElement.loop = false;
   streamVideoElement.mute = !isStreamReady;
 
-  // safari hotfix
   if (streamVideoElement.paused) {
     streamVideoElement
       .play()
