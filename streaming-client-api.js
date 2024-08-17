@@ -142,6 +142,44 @@ destroyButton.onclick = async () => {
   closePC();
 };
 
+// Función para hacer que el avatar diga "Hola"
+const speakButton = document.getElementById('speak-button');
+speakButton.onclick = async () => {
+  const options = {
+    method: 'POST',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+      Authorization: `Basic ${DID_API.key}`,
+    },
+    body: JSON.stringify({
+      script: {
+        type: 'text',
+        provider: {
+          type: 'microsoft',
+          voice_id: 'en-US-JennyNeural',
+        },
+        input: 'Hello', // Aquí especificamos el texto "Hello"
+        ssml: false,
+      },
+      config: {
+        fluent: false,
+        pad_audio: 0.0,
+      },
+      audio_optimization: 2,
+      session_id: sessionId, // Asegúrate de que esta variable esté disponible
+    }),
+  };
+
+  try {
+    const response = await fetch(`${DID_API.url}/talks/streams/${streamId}`, options);
+    const data = await response.json();
+    console.log('Respuesta del servidor:', data);
+  } catch (err) {
+    console.error('Error al enviar el texto al avatar:', err);
+  }
+};
+
 function onIceGatheringStateChange() {
   iceGatheringStatusLabel.innerText = peerConnection.iceGatheringState;
   iceGatheringStatusLabel.className = 'iceGatheringState-' + peerConnection.iceGatheringState;
@@ -231,22 +269,12 @@ function onVideoStatusChange(videoIsPlaying, stream) {
 }
 
 function onTrack(event) {
-  /**
-   * The following code is designed to provide information about wether currently there is data
-   * that's being streamed - It does so by periodically looking for changes in total stream data size
-   *
-   * This information in our case is used in order to show idle video while no video is streaming.
-   * To create this idle video use the POST https://api.d-id.com/talks (or clips) endpoint with a silent audio file or a text script with only ssml breaks
-   * https://docs.aws.amazon.com/polly/latest/dg/supportedtags.html#break-tag
-   * for seamless results use `config.fluent: true` and provide the same configuration as the streaming video
-   */
-
   if (!event.track) return;
 
   statsIntervalId = setInterval(async () => {
     const stats = await peerConnection.getStats(event.track);
     stats.forEach((report) => {
-     if (report.type === 'inbound-rtp' && report.kind === 'video') {
+      if (report.type === 'inbound-rtp' && report.kind === 'video') {
         const videoStatusChanged = videoIsPlaying !== report.bytesReceived > lastBytesReceived;
 
         if (videoStatusChanged) {
@@ -260,14 +288,6 @@ function onTrack(event) {
 }
 
 function onStreamEvent(message) {
-  /**
-   * This function handles stream events received on the data channel.
-   * The 'stream/ready' event received on the data channel signals the end of the 2sec idle streaming.
-   * Upon receiving the 'ready' event, we can display the streamed video if one is available on the stream channel.
-   * Until the 'ready' event is received, we hide any streamed video.
-   * Additionally, this function processes events for stream start, completion, and errors. Other data events are disregarded.
-   */
-
   if (pcDataChannel.readyState === 'open') {
     let status;
     const [event, _] = message.data.split(':');
@@ -290,7 +310,6 @@ function onStreamEvent(message) {
         break;
     }
 
-    // Set stream ready after a short delay, adjusting for potential timing differences between data and stream channels
     if (status === 'ready') {
       setTimeout(() => {
         console.log('stream/ready');
