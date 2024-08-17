@@ -465,8 +465,8 @@ async function agentsAPIworkflow() {
           "type": "microsoft",
           "voice_id": "en-US-JennyMultilingualV2Neural"
         },
-        "thumbnail": "https://create-images-results.d-id.com/DefaultPresenters/Emma_f/v1_image.jpeg",
-        "source_url": "https://create-images-results.d-id.com/DefaultPresenters/Emma_f/v1_image.jpeg"
+        "thumbnail": "https://logicoycreativo.com/did/a.jpg",
+        "source_url": "https://logicoycreativo.com/did/a.jpg"
       },
       "llm": {
         "type": "openai",
@@ -475,7 +475,7 @@ async function agentsAPIworkflow() {
         "instructions": "Your name is Emma, an AI designed to assist with information about Prompt Engineering and RAG",
         "template": "rag-ungrounded"
       },
-      "preview_name": "Emma"
+      "preview_name": "Pablo"
     }
 
   )
