@@ -285,7 +285,7 @@ connectButton.onclick = async () => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      source_url: 'https://create-images-results.d-id.com/DefaultPresenters/Emma_f/v1_image.jpeg'
+      source_url: 'https://logicoycreativo.com/did/a.jpg'
     }),
   });
 
