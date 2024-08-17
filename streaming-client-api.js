@@ -21,7 +21,6 @@ let lastBytesReceived;
 let videoIsPlaying = false;
 let streamVideoOpacity = 0;
 
-// Set this variable to true to request stream warmup upon connection to mitigate potential jittering issues
 const stream_warmup = true;
 let isStreamReady = !stream_warmup;
 
@@ -38,7 +37,7 @@ const streamEventLabel = document.getElementById('stream-event-label');
 
 const presenterInputByService = {
   talks: {
-    source_url: 'https://logicoycreativo.com/did/a.jpg', // URL de la nueva imagen
+    source_url: 'https://logicoycreativo.com/did/a.jpg',
   },
   clips: {
     presenter_id: 'rian-lZC6MmWfC1',
@@ -60,6 +59,9 @@ connectButton.onclick = async () => {
     headers: {
       Authorization: `Basic ${DID_API.key}`,
       'Content-Type': 'application/json',
+      'x-api-key-external': JSON.stringify({
+        elevenlabs: 'eb3777c768c6f1f6b0fc52adb0d7dc2d' // Tu API Key de ElevenLabs
+      })
     },
     body: JSON.stringify({ ...presenterInputByService[DID_API.service], stream_warmup }),
   });
@@ -71,7 +73,7 @@ connectButton.onclick = async () => {
   try {
     sessionClientAnswer = await createPeerConnection(offer, iceServers);
   } catch (e) {
-    console.log('error during streaming setup', e);
+    console.log('Error durante la configuración del streaming', e);
     stopAllStreams();
     closePC();
     return;
@@ -101,6 +103,9 @@ startButton.onclick = async () => {
       headers: {
         Authorization: `Basic ${DID_API.key}`,
         'Content-Type': 'application/json',
+        'x-api-key-external': JSON.stringify({
+          elevenlabs: 'eb3777c768c6f1f6b0fc52adb0d7dc2d' // Tu API Key de ElevenLabs
+        })
       },
       body: JSON.stringify({
         script: {
@@ -144,7 +149,10 @@ speakButton.onclick = async () => {
     headers: {
       accept: 'application/json',
       'content-type': 'application/json',
-      Authorization: 'Bearer eb3777c768c6f1f6b0fc52adb0d7dc2d', // API Key de ElevenLabs
+      Authorization: `Basic ${DID_API.key}`, // API Key de D-ID
+      'x-api-key-external': JSON.stringify({
+        elevenlabs: 'eb3777c768c6f1f6b0fc52adb0d7dc2d' // Tu API Key de ElevenLabs
+      })
     },
     body: JSON.stringify({
       script: {
@@ -153,7 +161,7 @@ speakButton.onclick = async () => {
           type: 'elevenlabs', // Proveedor: ElevenLabs
           voice_id: 'CamoVyd4MjMDTo3FB2jt', // ID de la voz personalizada
         },
-        input: 'Hola, ¿cómo estás?', // Nuevo texto
+        input: 'Hola, ¿cómo estás?', // Texto a decir
         ssml: false,
       },
       config: {
