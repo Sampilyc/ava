@@ -161,7 +161,7 @@ speakButton.onclick = async () => {
           type: 'elevenlabs', // Proveedor: ElevenLabs
           voice_id: 'CamoVyd4MjMDTo3FB2jt', // ID de la voz personalizada
         },
-        input: 'Hola, ¿cómo estás?', // Texto a decir
+        input: 'Hola, ¿cómo estás? Mi nombre es Pablo martin sampietro y soy el mejor del mundo. Estas bien? Espero que si. Te mando un abrazo muy grande.', // Texto a decir
         ssml: false,
       },
       config: {
