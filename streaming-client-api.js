@@ -154,7 +154,7 @@ speakButton.onclick = async () => {
         elevenlabs: 'eb3777c768c6f1f6b0fc52adb0d7dc2d' // Tu API Key de ElevenLabs
       })
     },
-    body: JSON.stringify({
+     body: JSON.stringify({
       script: {
         type: 'text',
         provider: {
@@ -165,14 +165,10 @@ speakButton.onclick = async () => {
         ssml: false,
       },
       config: {
+        output_resolution: 1080,  // Configura la resolución del video
         fluent: false,
         pad_audio: 0.0,
       },
-  "presenter_config": {
-    "crop": {
-      "type": "rectangle"
-    }
-  }
       audio_optimization: 2,
       session_id: sessionId,
     }),
