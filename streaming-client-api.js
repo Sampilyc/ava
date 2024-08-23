@@ -170,16 +170,9 @@ speakButton.onclick = async () => {
       },
   "presenter_config": {
     "crop": {
-      "type": "rectangle",
-      "rectangle":{
-        "bottom":0,
-        "top":0,
-        "right":0,
-        "left":0
-      }
+      "type": "rectangle"
     }
   }
-      
       audio_optimization: 2,
       session_id: sessionId,
     }),
