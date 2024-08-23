@@ -45,7 +45,7 @@ const presenterInputByService = {
   },
   "presenter_config": {
     "crop": {
-      "type": "wide"
+      "type": "rectangle"
     }
   }
 };
