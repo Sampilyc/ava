@@ -43,6 +43,11 @@ const presenterInputByService = {
     presenter_id: 'rian-lZC6MmWfC1',
     driver_id: 'mXra4jY38i',
   },
+  "presenter_config": {
+    "crop": {
+      "type": "wide"
+    }
+  }
 };
 
 const connectButton = document.getElementById('connect-button');
@@ -165,7 +170,6 @@ speakButton.onclick = async () => {
         ssml: false,
       },
       config: {
-        output_resolution: 1080,  // Configura la resolución del video
         fluent: false,
         pad_audio: 0.0,
       },
