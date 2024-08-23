@@ -37,7 +37,7 @@ const streamEventLabel = document.getElementById('stream-event-label');
 
 const presenterInputByService = {
   talks: {
-    source_url: 'https://logicoycreativo.com/did/a.jpg',
+    source_url: 'talk.jpg',
   },
   clips: {
     presenter_id: 'rian-lZC6MmWfC1',
@@ -369,7 +369,7 @@ function setStreamVideoElement(stream) {
 }
 
 function playIdleVideo() {
-  idleVideoElement.src = DID_API.service == 'clips' ? 'rian_idle.mp4' : 'or_idle.mp4';
+  idleVideoElement.src = DID_API.service == 'clips' ? 'talk.mp4' : 'talk.mp4';
 }
 
 function stopAllStreams() {
