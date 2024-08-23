@@ -37,7 +37,7 @@ const streamEventLabel = document.getElementById('stream-event-label');
 
 const presenterInputByService = {
   talks: {
-    source_url: 'https://ava-swart.vercel.app/talk.jpg',
+    source_url: 'https://ava-swart.vercel.app/idlep.mp4',
   },
   clips: {
     presenter_id: 'rian-lZC6MmWfC1',
