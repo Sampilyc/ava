@@ -170,6 +170,7 @@ speakButton.onclick = async () => {
         ssml: false,
       },
       config: {
+        output_resolution: 484,  // Configura la resolución del video
         fluent: false,
         pad_audio: 0.0,
       },
