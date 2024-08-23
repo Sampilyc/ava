@@ -37,7 +37,7 @@ const streamEventLabel = document.getElementById('stream-event-label');
 
 const presenterInputByService = {
   talks: {
-    source_url: 'https://ava-swart.vercel.app/idlep.mp4',
+    source_url: 'https://ava-swart.vercel.app/talk.jpg',
   },
   clips: {
     presenter_id: 'rian-lZC6MmWfC1',
@@ -168,6 +168,18 @@ speakButton.onclick = async () => {
         fluent: false,
         pad_audio: 0.0,
       },
+  "presenter_config": {
+    "crop": {
+      "type": "rectangle",
+      "rectangle":{
+        "bottom":0,
+        "top":0,
+        "right":0,
+        "left":0
+      }
+    }
+  }
+      
       audio_optimization: 2,
       session_id: sessionId,
     }),
