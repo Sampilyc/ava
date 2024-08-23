@@ -369,7 +369,7 @@ function setStreamVideoElement(stream) {
 }
 
 function playIdleVideo() {
-  idleVideoElement.src = DID_API.service == 'clips' ? 'talk.mp4' : 'talk.mp4';
+  idleVideoElement.src = DID_API.service == 'clips' ? 'idlep.mp4' : 'idlep.mp4';
 }
 
 function stopAllStreams() {
